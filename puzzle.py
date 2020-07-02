@@ -12,21 +12,50 @@ CKnave = Symbol("C is a Knave")
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
+    # Information about the structure of the problem itself:
+    # Each character is either a knight or a knave, but not both
+    Biconditional(AKnight, Not(AKnave)),
+
+    # Information about what the characters said:
+    # What each character says, If it is a Knight, is True, If it is a Knave, is False
+    # What A said
+    Implication(AKnight, And(AKnight, AKnave)),
+    Implication(AKnave, Not(And(AKnight, AKnave)))
+    # This logic that I made for: character X said Y, could be wrote like: 
+    # Biconditional(XKnight, Y), 
+    # but I thought that for the exercice's proposal, would be more visible:
+    # Implication(XKnight, Y) and Implication(XKnave, Not(Y))
+
 )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(BKnight, Not(BKnave)),
+
+    # What A said
+    Implication(AKnight, And(AKnave, BKnave)),
+    Implication(AKnave, Not(And(AKnave, BKnave)))
+    # What B said
+
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(BKnight, Not(BKnave)),
+
+    # What A said
+    Implication(AKnight, Biconditional(AKnight, BKnight)),
+    Implication(AKnave, Not(Biconditional(AKnight, BKnight))),
+    # What B said
+    Implication(BKnight, Biconditional(AKnight, Not(BKnight))),
+    Implication(BKnave, Not(Biconditional(AKnight, Not(BKnight))))
+
 )
 
 # Puzzle 3
@@ -35,7 +64,23 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(CKnight, Not(CKnave)),
+
+    # What A said
+    Implication(AKnight, Or(AKnight, AKnave)),
+    Implication(AKnave, Not(Or(AKnight, AKnave))),
+    # What B said
+    Implication(BKnight, Implication(AKnight, AKnave)),
+    Implication(BKnave, Not(Implication(AKnight, AKnave))),
+
+    Implication(BKnight, CKnave),
+    Implication(BKnave, Not(CKnave)),
+    # What C said
+    Implication(CKnight, AKnight),
+    Implication(CKnave, Not(AKnight))
+
 )
 
 
